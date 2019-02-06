@@ -7,7 +7,7 @@
 
 package org.usfirst.frc.team7043.robot;
 
-import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 
 import edu.wpi.first.wpilibj.Spark;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
@@ -25,10 +25,10 @@ public class RobotMap {
 	public static Timer masterTimer = new Timer();
 	
 	//START Drive Motor Map
-	public static WPI_TalonSRX frontLeftMotor = new WPI_TalonSRX(0); //Talon SRX ID (Set in web config)
-	public static WPI_TalonSRX frontRightMotor = new WPI_TalonSRX(1); //Talon SRX ID (Set in web config)
-	public static WPI_TalonSRX rearRightMotor = new WPI_TalonSRX(2); //Talon SRX ID (Set in web config)
-	public static WPI_TalonSRX rearLeftMotor = new WPI_TalonSRX(3); //Talon SRX ID (Set in web config)
+	public static WPI_VictorSPX frontLeftMotor = new WPI_VictorSPX(0); //Victor SPX ID (Set in web config)
+	public static WPI_VictorSPX frontRightMotor = new WPI_VictorSPX(1); //Victor SPX ID (Set in web config)
+	public static WPI_VictorSPX rearRightMotor = new WPI_VictorSPX(2); //Victor SPX ID (Set in web config)
+	public static WPI_VictorSPX rearLeftMotor = new WPI_VictorSPX(3); //Victor SPX ID (Set in web config)
 	
 	public static SpeedControllerGroup leftDrive = new SpeedControllerGroup(frontLeftMotor, rearLeftMotor);
 	public static SpeedControllerGroup rightDrive = new SpeedControllerGroup(frontRightMotor, rearRightMotor);
@@ -36,16 +36,16 @@ public class RobotMap {
 	public static DifferentialDrive robotDriveMain; // = new DifferentialDrive(RobotMap.leftDrive, RobotMap.rightDrive);
 	//END Drive Motor Map
 	
+	//Start Pulley System Map
+	public static Spark pulleyMotor = new Spark(0); //PWM Pin group 2 on RoboRio
+	//End Pulley System Map
+	
 	//START Intake Motor Map
-	public static Spark leftIntakeMotor = new Spark(7); //PWM Pin group 0 on RoboRio
-	public static Spark rightIntakeMotor = new Spark(8); //PWM Pin group 1 on RoboRio
+	public static Spark leftIntakeMotor = new Spark(1); //PWM Pin group 0 on RoboRio
+	public static Spark rightIntakeMotor = new Spark(2); //PWM Pin group 1 on RoboRio
 	
 	public static SpeedControllerGroup rollerIntake = new SpeedControllerGroup(leftIntakeMotor,rightIntakeMotor);
 	//END Intake Motor Map
-	
-	//Start Pulley System Map
-	public static Spark pulleyMotor = new Spark(9); //PWM Pin group 2 on RoboRio
-	//End Pulley System Map
 	
 	
 	
