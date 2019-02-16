@@ -7,6 +7,7 @@
 
 package org.usfirst.frc.team7043.robot;
 
+import org.usfirst.frc.team7043.robot.commands.BallMotorCommand;
 import org.usfirst.frc.team7043.robot.commands.DriveCommand;
 import org.usfirst.frc.team7043.robot.commands.PullyCommand;
 import org.usfirst.frc.team7043.robot.subsystems.BallMotorSubsystem;
@@ -40,6 +41,7 @@ public class Robot extends TimedRobot {
 	public Preferences prefs;
 	
 	Command driveTrainCommand = new DriveCommand();
+	Command ballMotorCommand = new BallMotorCommand();
 
 	/**
 	 * This function is run when the robot is first started up and should be
@@ -105,6 +107,9 @@ public class Robot extends TimedRobot {
 		if (driveTrainCommand != null) {
 			driveTrainCommand.start();
 		}
+		if (ballMotorCommand != null) {
+			ballMotorCommand.start();
+		}
 	}
 
 	/**
@@ -114,6 +119,7 @@ public class Robot extends TimedRobot {
 	public void teleopPeriodic() {
 		Scheduler.getInstance().run();
 		RobotMap.pn.set(refOI.compressorButton());
+		RobotMap.pn2.set(refOI.compressorButton());
 	}
 
 	public void initCamera(String name, int ID) {

@@ -23,7 +23,7 @@ public class DriveTrainSubsystem extends Subsystem {
     }
     
     public void stop() {
-    		RobotMap.robotDriveMain.stopMotor();
+    	RobotMap.robotDriveMain.stopMotor();
     }
 }
 

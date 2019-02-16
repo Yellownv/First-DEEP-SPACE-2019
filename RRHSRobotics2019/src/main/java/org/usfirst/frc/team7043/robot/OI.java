@@ -45,14 +45,6 @@ public class OI {
 	// button.whenReleased(new ExampleCommand());
 	 */
 	
-	/*public Joystick controller = new Joystick(0);
-	
-	Button intakeForward = new JoystickButton(controller, 1);
-	Button intakeReverse = new JoystickButton(controller, 2);
-	Button lowerIntake = new JoystickButton(controller, 5);
-	Button raiseIntake = new JoystickButton(controller, 6);
-	*/
-	
 	public XboxController controller = new XboxController(0);
 	
 	Button intakeForward = new JoystickButton(controller, 1);
@@ -68,8 +60,11 @@ public class OI {
 		return controller.getBackButton();
 	}
 	
-	public boolean ballMotorButton() {
-		return controller.getBButtonPressed();
+	public boolean ballUpMotorButton() {
+		return controller.getBButton();
+	}
+	public boolean ballDownMotorButton() {
+		return controller.getAButton();
 	}
 	
 	public OI() {

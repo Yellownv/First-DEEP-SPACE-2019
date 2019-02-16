@@ -3,7 +3,6 @@ package org.usfirst.frc.team7043.robot.commands;
 import org.usfirst.frc.team7043.robot.Robot;
 
 import edu.wpi.first.wpilibj.Preferences;
-import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj.command.Command;
 
 /**
@@ -11,9 +10,9 @@ import edu.wpi.first.wpilibj.command.Command;
  */
 public class BallMotorCommand extends Command {
 	
-	private float md = 90;
-	
 	Preferences prefs = Preferences.getInstance();
+	
+	float a = .5f;
 	
     //TeleMode Constructor
     public BallMotorCommand() {
@@ -22,15 +21,11 @@ public class BallMotorCommand extends Command {
     }
 
     // Called just before this Command runs the first time
-    protected void initialize() {
-    
-    }
+    protected void initialize() {}
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    		if(Robot.refOI.ballMotorButton()) {
-    			Robot.BallMotor.setSpeed(1);
-    		} 
+    	Robot.BallMotor.setSpeed((Robot.refOI.ballUpMotorButton()?a:0)+(Robot.refOI.ballDownMotorButton()?-a:0));
     }
 
     // Make this return true when this Command no longer needs to run execute()

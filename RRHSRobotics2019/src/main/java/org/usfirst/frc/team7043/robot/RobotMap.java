@@ -7,10 +7,8 @@
 
 package org.usfirst.frc.team7043.robot;
 
-import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 
-import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.Spark;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
@@ -49,8 +47,7 @@ public class RobotMap {
 	//End Pulley System Map
 	
 	//START Ball Motor Map
-	public static WPI_TalonSRX ballMotor = new WPI_TalonSRX(4);
-	public static Encoder encoder = new Encoder(0, 4);
+	public static Spark ballMotor = new Spark(1);
 	//END Ball Motor Map
 	
 	

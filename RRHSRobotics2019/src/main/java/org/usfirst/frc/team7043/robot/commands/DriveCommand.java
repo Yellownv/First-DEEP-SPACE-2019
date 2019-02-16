@@ -6,9 +6,7 @@ import edu.wpi.first.wpilibj.Preferences;
 import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj.command.Command;
 
-/**
- *
- */
+
 public class DriveCommand extends Command {
 	
 	private Double speed;
@@ -34,7 +32,7 @@ public class DriveCommand extends Command {
 			Robot.DriveTrain.drive( (invert?-1:1) * speed, rotation);
 		} else {
 			Robot.DriveTrain.drive( 
-				(invert?1:-1) * -Robot.refOI.controller.getY(Hand.kLeft)*prefs.getDouble("Percent of Max Speed (0.0 to 1.0)", 1.0), 
+				(invert?-1:1) * -Robot.refOI.controller.getY(Hand.kLeft)*prefs.getDouble("Percent of Max Speed (0.0 to 1.0)", 1.0), 
 				Robot.refOI.controller.getX(Hand.kLeft)*prefs.getDouble("Percent of Max Speed (0.0 to 1.0)", 1.0));
 		}
     }
