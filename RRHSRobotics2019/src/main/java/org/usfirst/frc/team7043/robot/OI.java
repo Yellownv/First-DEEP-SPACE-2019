@@ -63,11 +63,13 @@ public class OI {
 	public boolean invertMotorButton() {
 		return controller.getStartButtonPressed();
 	}
-	Boolean intakeCameraButton() {
-		return controller.getXButtonPressed();
+	
+	public boolean compressorButton() {
+		return controller.getBackButton();
 	}
-	Boolean topCameraButton() {
-		return controller.getYButtonPressed();
+	
+	public boolean ballMotorButton() {
+		return controller.getBButtonPressed();
 	}
 	
 	public OI() {

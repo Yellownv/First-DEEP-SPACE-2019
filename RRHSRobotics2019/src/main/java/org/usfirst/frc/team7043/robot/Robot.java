@@ -7,26 +7,19 @@
 
 package org.usfirst.frc.team7043.robot;
 
-import edu.wpi.cscore.CvSink;
+import org.usfirst.frc.team7043.robot.commands.DriveCommand;
+import org.usfirst.frc.team7043.robot.commands.PullyCommand;
+import org.usfirst.frc.team7043.robot.subsystems.BallMotorSubsystem;
+import org.usfirst.frc.team7043.robot.subsystems.DriveTrainSubsystem;
+import org.usfirst.frc.team7043.robot.subsystems.PullySubsystem;
+
 import edu.wpi.cscore.UsbCamera;
-import edu.wpi.cscore.VideoSink;
 import edu.wpi.first.cameraserver.CameraServer;
-import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Preferences;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
-import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-
-import org.usfirst.frc.team7043.robot.commands.IntakeCommand;
-import org.usfirst.frc.team7043.robot.commands.PullyCommand;
-import org.usfirst.frc.team7043.robot.commands.AutoModeCommandGroup;
-import org.usfirst.frc.team7043.robot.commands.DriveCommand;
-import org.usfirst.frc.team7043.robot.subsystems.DriveTrainSubsystem;
-import org.usfirst.frc.team7043.robot.subsystems.IntakeSubsystem;
-import org.usfirst.frc.team7043.robot.subsystems.PullySubsystem;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -37,8 +30,8 @@ import org.usfirst.frc.team7043.robot.subsystems.PullySubsystem;
  */
 public class Robot extends TimedRobot {
 	public static final DriveTrainSubsystem DriveTrain = new DriveTrainSubsystem();
-	public static final IntakeSubsystem Intake = new IntakeSubsystem();
 	public static final PullySubsystem Pully = new PullySubsystem();
+	public static BallMotorSubsystem BallMotor = new BallMotorSubsystem();
 	public static OI refOI = new OI();
 	public static RobotMap robotMap = new RobotMap();
 	
@@ -46,17 +39,7 @@ public class Robot extends TimedRobot {
 
 	public Preferences prefs;
 	
-	public UsbCamera topCamera;
-	public UsbCamera intakeCamera;
-	public VideoSink cameraServer;
-	public CvSink cvsink1;
-	public CvSink cvsink2;
-	
 	Command driveTrainCommand = new DriveCommand();
-	
-	Command selectedAutonomousCommand;
-	SendableChooser<String> autoChooser = new SendableChooser<>();
-	SendableChooser<Command> autoChooserDebug = new SendableChooser<>();
 
 	/**
 	 * This function is run when the robot is first started up and should be
@@ -67,59 +50,11 @@ public class Robot extends TimedRobot {
 		prefs = Preferences.getInstance();
 		DEBUG = prefs.getBoolean("DEBUG", false);
 		
-		/*if(DEBUG) {
-			autoChooserDebug.setDefaultOption("Right Auto Drive", new AutoModeCommandGroup("right"));
-			autoChooserDebug.setDefaultOption("Left Auto Drive", new AutoModeCommandGroup("left"));
-			//autoChooserDebug.setDefaultOption("Mid Right Auto Drive", new AutoModeCommandGroup("midRight"));
-			//autoChooserDebug.setDefaultOption("Right Auto Drive", new AutoModeCommandGroup("midLeft"));
-			autoChooserDebug.setDefaultOption("Right Auto Block Drive", new AutoModeCommandGroup("rightBlock"));
-			autoChooserDebug.setDefaultOption("Left Auto Block Drive", new AutoModeCommandGroup("leftBlock"));
-		//	autoChooserDebug.setDefaultOption("Right Auto Drive", new AutoModeCommandGroup("midRightBlock"));
-		//	autoChooserDebug.setDefaultOption("Right Auto Drive", new AutoModeCommandGroup("midLeftBlock"));
-			
-			SmartDashboard.putData("Auto Mode (Debug):", autoChooserDebug);
-		} else {
-			autoChooser.setDefaultOption("Right Auto Drive", "right");
-			autoChooser.setDefaultOption("Left Auto Drive", "left");
-			autoChooser.setDefaultOption("Middle Auto Drive", "mid");
-			
-			SmartDashboard.putData("Auto Mode:", autoChooser);
-		}*/
-		
-		if(DEBUG) {
-			autoChooserDebug.setDefaultOption("Right Auto Drive", new AutoModeCommandGroup("right"));
-			autoChooserDebug.setDefaultOption("Left Auto Drive", new AutoModeCommandGroup("left"));
-			//autoChooserDebug.setDefaultOption("Mid Right Auto Drive", new AutoModeCommandGroup("midRight"));
-			//autoChooserDebug.setDefaultOption("Right Auto Drive", new AutoModeCommandGroup("midLeft"));
-			autoChooserDebug.setDefaultOption("Right Auto Block Drive", new AutoModeCommandGroup("rightBlock"));
-			autoChooserDebug.setDefaultOption("Left Auto Block Drive", new AutoModeCommandGroup("leftBlock"));
-		//	autoChooserDebug.setDefaultOption("Right Auto Drive", new AutoModeCommandGroup("midRightBlock"));
-		//	autoChooserDebug.setDefaultOption("Right Auto Drive", new AutoModeCommandGroup("midLeftBlock"));
-			
-			SmartDashboard.putData("Auto Mode (Debug):", autoChooserDebug);
-		} else {
-			autoChooser.setDefaultOption("Right Auto Drive", "right");
-			autoChooser.setDefaultOption("Left Auto Drive", "left");
-			autoChooser.setDefaultOption("Middle Auto Drive", "mid");
-			
-			SmartDashboard.putData("Auto Mode:", autoChooser);
-		}
-		
-		
-		topCamera = CameraServer.getInstance().startAutomaticCapture(0);
-		intakeCamera = CameraServer.getInstance().startAutomaticCapture(1);
-		cameraServer = CameraServer.getInstance().getServer();
-		cvsink1 = new CvSink("IntakeCameraCV");
-		cvsink1.setSource(intakeCamera);
-		cvsink1.setEnabled(true);
-		cvsink2 = new CvSink("TopCameraCV");
-		cvsink2.setSource(topCamera);
-		cvsink2.setEnabled(true);
+		initCamera("Primary Camera", 0);
+		initCamera("Secondary Camera", 1);
 		
 		RobotMap.leftDrive.setInverted(true);
 		RobotMap.robotDriveMain = new DifferentialDrive(RobotMap.leftDrive, RobotMap.rightDrive);
-		refOI.intakeReverse.whileHeld(new IntakeCommand("pull"));
-		refOI.intakeForward.whileHeld(new IntakeCommand("release"));		
 		refOI.raiseIntake.whileHeld(new PullyCommand("raise"));
 		refOI.lowerIntake.whileHeld(new PullyCommand("lower"));
 	}
@@ -151,47 +86,7 @@ public class Robot extends TimedRobot {
 	 * to the switch structure below with additional strings & commands.
 	 */
 	@Override
-	public void autonomousInit() {
-		String autoType = autoChooser.getSelected();
-		
-		/*
-		 * String autoSelected = SmartDashboard.getString("Auto Selector",
-		 * "Default"); switch(autoSelected) { case "My Auto": autonomousCommand
-		 * = new MyAutoCommand(); break; case "Default Auto": default:
-		 * autonomousCommand = new ExampleCommand(); break; }
-		 */
-		
-		if(DEBUG) {
-			selectedAutonomousCommand = autoChooserDebug.getSelected();
-		} else {
-			String gameData;
-			gameData = DriverStation.getInstance().getGameSpecificMessage();
-	        if(gameData.length() > 0)
-	        {
-			    if(gameData.charAt(0) == 'L' && (autoType == "left" || autoType == "mid"))
-			    	{
-			    		//Put left auto code here
-			    		if(autoType == "mid") {
-			    			autoType += "Left";
-			    		}
-			    		selectedAutonomousCommand = new AutoModeCommandGroup(autoType + "Block");
-			    	} else {
-			    		//Put right auto code here
-			    		if(autoType == "mid") {
-			    			autoType += "Right";
-			    		}
-			    		selectedAutonomousCommand = new AutoModeCommandGroup(autoType);
-			    	}
-	        }
-		}
-
-		
-		
-		// schedule the autonomous command (example)
-		if (selectedAutonomousCommand != null) {
-			selectedAutonomousCommand.start();
-		}
-	}
+	public void autonomousInit() {}
 
 	/**
 	 * This function is called periodically during autonomous.
@@ -207,9 +102,6 @@ public class Robot extends TimedRobot {
 		// teleop starts running. If you want the autonomous to
 		// continue until interrupted by another command, remove
 		// this line or comment it out.
-		if (selectedAutonomousCommand != null) {
-			selectedAutonomousCommand.cancel();
-		}
 		if (driveTrainCommand != null) {
 			driveTrainCommand.start();
 		}
@@ -220,21 +112,20 @@ public class Robot extends TimedRobot {
 	 */
 	@Override
 	public void teleopPeriodic() {
-		if (refOI.intakeCameraButton() && !refOI.topCameraButton()) {
-			SmartDashboard.putString("Info", "Setting Intake Camera");
-		    cameraServer.setSource(intakeCamera);
-		} else if (!refOI.intakeCameraButton() && refOI.topCameraButton()) {
-			SmartDashboard.putString("Info", "Setting Top Camera");
-		    cameraServer.setSource(topCamera);
-		}
 		Scheduler.getInstance().run();
+		RobotMap.pn.set(refOI.compressorButton());
+	}
+
+	public void initCamera(String name, int ID) {
+		UsbCamera cam = CameraServer.getInstance().startAutomaticCapture(ID);
+		cam.setFPS(60);
+		cam.setResolution(360, 360);
+		CameraServer.getInstance().addServer(name, ID).setSource(cam);
 	}
 
 	/**
 	 * This function is called periodically during test mode.
 	 */
 	@Override
-	public void testPeriodic() {
-		
-	}
+	public void testPeriodic() {}
 }

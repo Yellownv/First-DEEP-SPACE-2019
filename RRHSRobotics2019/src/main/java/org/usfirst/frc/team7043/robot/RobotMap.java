@@ -7,8 +7,11 @@
 
 package org.usfirst.frc.team7043.robot;
 
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 
+import edu.wpi.first.wpilibj.Encoder;
+import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.Spark;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.Timer;
@@ -36,16 +39,19 @@ public class RobotMap {
 	public static DifferentialDrive robotDriveMain; // = new DifferentialDrive(RobotMap.leftDrive, RobotMap.rightDrive);
 	//END Drive Motor Map
 	
+	//Start Solenoid Map
+	public static Solenoid pn = new Solenoid(6, 0);
+	public static Solenoid pn2 = new Solenoid(6, 1);
+	//End Solenoid Map
+	
 	//Start Pulley System Map
 	public static Spark pulleyMotor = new Spark(0); //PWM Pin group 2 on RoboRio
 	//End Pulley System Map
 	
-	//START Intake Motor Map
-	public static Spark leftIntakeMotor = new Spark(1); //PWM Pin group 0 on RoboRio
-	public static Spark rightIntakeMotor = new Spark(2); //PWM Pin group 1 on RoboRio
-	
-	public static SpeedControllerGroup rollerIntake = new SpeedControllerGroup(leftIntakeMotor,rightIntakeMotor);
-	//END Intake Motor Map
+	//START Ball Motor Map
+	public static WPI_TalonSRX ballMotor = new WPI_TalonSRX(4);
+	public static Encoder encoder = new Encoder(0, 4);
+	//END Ball Motor Map
 	
 	
 	

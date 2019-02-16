@@ -27,9 +27,9 @@ public class PullyCommand extends Command {
         // Use requires() here to declare subsystem dependencies
     		requires(Robot.Pully);
     		if(mode == "raise") {
-    			speed = prefs.getDouble("Speed of pully up: ", 0.4);
+    			speed = prefs.getDouble("Speed of pully up: ", 0.3);
     		} else if(mode == "lower") {
-    			speed = prefs.getDouble("Speed of pully down: ", -0.4);
+    			speed = prefs.getDouble("Speed of pully down: ", -0.3);
     		}
     }
 
