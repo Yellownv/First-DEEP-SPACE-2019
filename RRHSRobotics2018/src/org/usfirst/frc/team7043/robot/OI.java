@@ -6,7 +6,7 @@
 /*----------------------------------------------------------------------------*/
 
 package org.usfirst.frc.team7043.robot;
-
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
@@ -53,18 +53,18 @@ public class OI {
 	Button raiseIntake = new JoystickButton(controller, 6);
 	*/
 	
-	public XboxController controller = new XboxController(0);
+	public Joystick controller = new Joystick(0);
 	
 	Button intakeForward = new JoystickButton(controller, 1);
 	Button intakeReverse = new JoystickButton(controller, 2);
 	Button lowerIntake = new JoystickButton(controller, 5);
 	Button raiseIntake = new JoystickButton(controller, 6);
-	
+	//      boolean clicked12 = m_rightStick.getRawButton(12);
 	Boolean intakeCameraButton() {
-		return controller.getXButtonPressed();
+		return controller.getRawButton(7);
 	}
 	Boolean topCameraButton() {
-		return controller.getYButtonPressed();
+		return controller.getRawButton(8);
 	}
 	
 	public OI() {
